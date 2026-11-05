@@ -1,20 +1,29 @@
 package com.example.aopDemo.service;
 
+import com.example.aopDemo.annotation.MeasureExecutionTime;
 import com.example.aopDemo.dto.Student;
+import jdk.jfr.Timespan;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StudentService {
-    public Student saveStudent(Student student){
 
+    @MeasureExecutionTime(warnAfter = 2000 , operation = "Creating student")
+    public Student createStudent(Student student) throws Throwable{
         System.out.println("Student saved");
-        //throw new RuntimeException("Some Errorr occured ");
+        try {
+            Thread.sleep(2000);
+        }catch (Exception e){
+
+        }
         return student;
     }
 
-    public String dummy(String s){
-
-        System.out.println("Dummy called ");
+    @MeasureExecutionTime(warnAfter = 1 , operation = "Getting student")
+    public String getStudent(String s){
+        System.out.println(s);
         return s;
     }
+
+
 }
